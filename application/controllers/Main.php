@@ -8,7 +8,7 @@ class Main extends CI_Controller {
 	}
 	public function index()
 	{
-		if(@$_SESSION['login']===1 && count($_SESSION['permission'])>0){
+		if(@$_SESSION['login']===1 && @count($_SESSION['permission'])>0){
 			$this->load->view('index');
 		}else{
 			$this->load->view('login');

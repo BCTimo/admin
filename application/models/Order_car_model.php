@@ -45,6 +45,23 @@ class order_car_model extends CI_Model {
             left join car c on c.sn = od.car_id
             left join driver d on d.sn = od.driver_id
         ';
+       
+        $query=$this->db->query($sql);
+        return $query->result();
+    }
+    function driver_mode_get_order_d($driver=''){
+        //$query = $this->db->get('order_car_d');
+        $sql='
+            select od.*,c.code as car_code,c.name as car_name,c.type as car_type, o.atime,o.btime,o.location,rem_drive,readytogo,
+            d.name as driver_name,d.phone as driver_phone 
+            from order_car_d od 
+            left join order_car o on o.sn = od.order_id
+            left join car c on c.sn = od.car_id
+            left join driver d on d.sn = od.driver_id
+        ';
+        if($driver!==''){
+            $sql.='where readytogo=1 and od.driver_id = '.$driver;
+        }
         $query=$this->db->query($sql);
         return $query->result();
     }

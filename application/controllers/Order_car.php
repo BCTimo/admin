@@ -131,7 +131,13 @@ class order_car extends CI_Controller {
 		];
 		$this->order_car_model->save_reply($data);
 	}
-	
+	public function ch_readytogo(){
+		$data = [
+			'sn' => $this->input->post('sn'),
+			'readytogo' => $this->input->post('readytogo'),
+		];
+		$this->order_car_model->update_data($data);
+	}
 	// public function delete(){
 	// 	$sn=$this->uri->segment(3);
 	// 	$data['detail'] = $this->order_car_model->delete_data($sn)[0];

@@ -29,5 +29,9 @@ class user_model extends CI_Model {
         $query = $this->db->get_where('user', array('account' => $account, 'password' => $pw));
 		return $query->result();
     }
+    function check_driver_permission($account,$pw){
+        $query = $this->db->get_where('driver', array('id' => $account, 'phone' => $pw));
+		return $query->result();
+    }
 
 }

@@ -81,8 +81,8 @@
                         case 4:$status='取消';break;
                       }
                       switch($v->readytogo){
-                        case 0:$readytogo='未確認';break;
-                        case 1:$readytogo='已確認(通知司機)';break;
+                        case 0:$readytogo_chk='';break;
+                        case 1:$readytogo_chk='checked';break;
                       }
                       echo '
                         <tr>
@@ -91,7 +91,7 @@
                           <td>'.$v->adate.'~'.$v->bdate.'</td>
                           <td>'.$v->special_price.'</td>
                           <td>'.$status.'</td>
-                          <td>'.$readytogo.'</td>
+                          <td><input type="checkbox" class="toggle-event" '.$readytogo_chk.' data-toggle="toggle" data-sn="'.$v->sn.'" data-on="確認派車" data-off="未確認" data-onstyle="success" data-offstyle="danger" value="readytogo"></td>
                           <td>'.$v->order_date.'</td>
                           <td>
                                 <a class="btn btn-app" href="'.site_url("order_car/edit/$v->sn").'">
@@ -159,6 +159,8 @@
 <script src="<?=base_url();?>/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=base_url();?>/dist/js/demo.js"></script>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
 $(function () {
     $("#list").DataTable({
@@ -170,7 +172,26 @@ $(function () {
 		"autoWidth": false
 	});
 
+  $('.toggle-event').change(function() {
+    var readytogo=Number($(this).prop('checked'));
+    var sn = $(this).data('sn');
+    
+    $.ajax({
+      type: "post",
+      data: {'readytogo': readytogo, 'sn': sn},
+      url: "order_car/ch_readytogo",
+      //dataType: "json",
+      //headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
+      success: function(data) {
+          
+      },
+      error: function(jqXHR) {
+          console.log("發生錯誤, 請重新操作");
+      }
+    })
+  })
 });
 </script>
+
 </body>
 </html>
