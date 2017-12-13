@@ -85,27 +85,40 @@ class order_car extends CI_Controller {
 		redirect('/order_car');
 	}
 	public function edit(){
-		$data['customer']['list'] = $this->customer_model->get_list();
+		$sn=$this->uri->segment(3);
+		$data['order'] = $this->order_car_model->get_detail($sn)[0];
+		$data['customer'] = $this->customer_model->get_detail($data['order']->customer_id)[0];
+		//echo '<pre>';print_r($data);die();
 		$data['car']['list'] = $this->car_model->get_list();
 		$data['driver']['list'] = $this->driver_model->get_list();
+		$data['order_d'] = $this->order_car_model->get_order_d_g($sn);
 		$data['title'] = '訂單';
 
-		$sn=$this->uri->segment(3);
+		
 		
 		$data['detail'] = $this->order_car_model->get_detail($sn)[0];
 		$this->load->view('Order_car/order_car_edit',$data);
 	}
 	public function update(){
-		
+		$this->load->helper('func');
 		$data = [
 			'sn' => $this->uri->segment(3),
-			'type' => $this->input->post('type'),
-			'name' => $this->input->post('name'),
-			'code' => $this->input->post('code'),
-			'price' => $this->input->post('price'),
+			'location' => $this->input->post('location'),
+			'adate' => $this->input->post('adate'),
+			'bdate' => $this->input->post('bdate'),
+			'atime' => $this->input->post('atime'),
+			'btime' => $this->input->post('btime'),
+			'org_price' => $this->input->post('org_price'),
+			'special_price' => $this->input->post('special_price'),
+			'invoice' => $this->input->post('invoice'),
 			'rem' => $this->input->post('rem'),
+			'rem_customer' => $this->input->post('rem_customer'),
+			'rem_drive' => $this->input->post('rem_drive'),
+			'status' => $this->input->post('status'),
 		];
 
+		$this->order_car_model->update_data($data);
+/*
 		//////file upload 圖片上傳
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png';
@@ -118,8 +131,24 @@ class order_car extends CI_Controller {
 		}	
 		
 		//////file upload 圖片上傳
-
-		$this->order_car_model->update_data($data);
+*/
+		/*使用日期每天迴圈  塞入order_car_d */
+		$this->order_car_model->clear_order_d($data['sn']); //清除現有的
+		foreach(date_range($data['adate'],$data['bdate']) as $day){
+			$data = [
+				'order_id' => $this->uri->segment(3),
+				'date' => $day
+			];
+			foreach($this->input->post('cars') as $k=>$car_id){
+				$data['car_id'] = $car_id;
+				$data['driver_id'] = $this->input->post('drivers')[$k];
+				//塞order_id date car_id	driver_id
+				$this->order_car_model->save_order_car_d($data);  //重新add 無限新增區
+			}
+		}
+		/*使用日期每天迴圈  塞入order_car_d */
+		
+		
 		redirect('/order_car');
 	}
 	public function driver_reply(){

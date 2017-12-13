@@ -57,7 +57,7 @@
 	  <div class="col-md-6">
 		  <div class="box box-primary">
 			  <div class="box-header with-border">
-				  <h3 class="box-title">新增<?=$title?> <?=date("Y/m/d")?></h3>
+				  <h3 class="box-title">修改<?=$title?> <?=date("Y/m/d")?></h3>
 			  </div>
 			  <div class="box-footer">
 				  <button type="button" onclick="history.go(-1)" class="btn btn-danger">取消</button>
@@ -66,44 +66,40 @@
 			  <!-- form start -->
 			  
 				  <div class="box-body">
-					  <label>客戶</label>
-					  <select name="customer_id" onchange="show_profile(this.value)" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-						  <option value="" >===請選擇客戶===</option>
-						  <?php
-							  foreach($customer['list'] as $k=>$v){
-								  echo '<option value="'.$v->sn.'">'.$v->name.'</option>';
-							  }
-						  ?>
-					  </select>
+					  <label><h4><?=$customer->name?></h4></label>
+					  <div class="form-group">電話：<?=$customer->tel?></div>
+					  <div class="form-group">手機：<?=$customer->phone?></div>
+					  <div class="form-group">地址：<?=$customer->address?></div>
+					  <div class="form-group">備註：<?=$customer->rem?></div>
 				  </div>
 
 				  <div id="cust_profile"></div>
 				  <div class="box-body">
 					  <label>訂單備註</label>
 					  <div class="form-group">
-						  <textarea name="rem" rows="8" cols="50"></textarea>
+						  <textarea name="rem" rows="8" cols="50"><?=$order->rem?></textarea>
 					  </div>
 				  </div>
 				  <div class="box-body">
 					  <label>給客戶的備註</label>
 					  <div class="form-group">
-						  <textarea name="rem_customer" rows="8" cols="50"></textarea>
+						  <textarea name="rem_customer" rows="8" cols="50"><?=$order->rem_customer?></textarea>
 					  </div>
 				  </div>
 				  <div class="box-body">
 					  <label>給司機的備註</label>
 					  <div class="form-group">
-						  <textarea name="rem_drive" rows="8" cols="50"></textarea>
+						  <textarea name="rem_drive" rows="8" cols="50"><?=$order->rem_drive?></textarea>
 					  </div>
 				  </div>
 				  <div class="box-body">
 					  <label>訂單狀態</label>
 					  <div class="form-group">
-						  <label>報價未收 <input type="radio" name="status" value="1" checked></label>&nbsp;&nbsp;
-						  <label>已收款 <input type="radio" name="status" value="2"></label>&nbsp;&nbsp;
-						  <label>已開發票 <input type="radio" name="status" value="3"></label>&nbsp;&nbsp;
-						  <label>結案 <input type="radio" name="status" value="4"></label>&nbsp;&nbsp;
-						  <label>取消 <input type="radio" name="status" value="5"></label>
+						  <label>報價未收 <input type="radio" name="status" value="1" <?php if($order->status==1){echo 'checked';} ?>></label>&nbsp;&nbsp;
+						  <label>已收款 <input type="radio" name="status" value="2" <?php if($order->status==2){echo 'checked';} ?>></label>&nbsp;&nbsp;
+						  <label>已開發票 <input type="radio" name="status" value="3" <?php if($order->status==3){echo 'checked';} ?>></label>&nbsp;&nbsp;
+						  <label>結案 <input type="radio" name="status" value="4" <?php if($order->status==4){echo 'checked';} ?>></label>&nbsp;&nbsp;
+						  <label>取消 <input type="radio" name="status" value="5" <?php if($order->status==5){echo 'checked';} ?>></label>
 					  </div>
 				  </div>
 			  <!--
@@ -143,7 +139,8 @@
 				  <a id="addcarbtn" onclick="javascript:;" class="btn btn-success">新增車輛</a>
 			  </div>
 			  <div class="box-body" id="car_detail">
-				  
+				<label>地點 :</label> <input type="text" name="location" value="<?=$order->location?>" id="input_location">
+				<p class="location_label"><a href="#">台東火車站</a> <a href="#">台東機場</a> <a href="#">台東碼頭</a></p>
 			  </div>
 			  <!-- /.box-body -->
 			  <div class="box-body">
@@ -152,7 +149,57 @@
 					  <div class="input-group-addon">
 						  <i class="fa fa-calendar"></i>
 					  </div>
-					  <input type="text" name="adate" id="adate" class="form-control pull-right datepicker"  required>
+					  <input type="text" name="adate" id="adate" class="datepicker" onchange="get_price()" value="<?=$order->adate?>" required>
+					  <select name="atime" class="">
+							<option value="00:00">00:00</option>
+							<option value="00:30">00:30</option>
+							<option value="01:00">01:00</option>
+							<option value="01:30">01:30</option>
+							<option value="02:00">02:00</option>
+							<option value="02:30">02:30</option>
+							<option value="03:00">03:00</option>
+							<option value="03:30">03:30</option>
+							<option value="04:00">04:00</option>
+							<option value="04:30">04:30</option>
+							<option value="05:00">05:00</option>
+							<option value="05:30">05:30</option>
+							<option value="06:00">06:00</option>
+							<option value="06:30">06:30</option>
+							<option value="07:00">07:00</option>
+							<option value="07:30">07:30</option>
+							<option value="08:00">08:00</option>
+							<option value="08:30">08:30</option>
+							<option value="09:00">09:00</option>
+							<option value="09:30">09:30</option>
+							<option value="10:00">10:00</option>
+							<option value="10:30">10:30</option>
+							<option value="11:00">11:00</option>
+							<option value="11:30">11:30</option>
+							<option value="12:00">12:00</option>
+							<option value="12:30">12:30</option>
+							<option value="13:00">13:00</option>
+							<option value="13:30">13:30</option>
+							<option value="14:00">14:00</option>
+							<option value="14:30">14:30</option>
+							<option value="15:00">15:00</option>
+							<option value="15:30">15:30</option>
+							<option value="16:00">16:00</option>
+							<option value="16:30">16:30</option>
+							<option value="17:00">17:00</option>
+							<option value="17:30">17:30</option>
+							<option value="18:00">18:00</option>
+							<option value="18:30">18:30</option>
+							<option value="19:00">19:00</option>
+							<option value="19:30">19:30</option>
+							<option value="20:00">20:00</option>
+							<option value="20:30">20:30</option>
+							<option value="21:00">21:00</option>
+							<option value="21:30">21:30</option>
+							<option value="22:00">22:00</option>
+							<option value="22:30">22:30</option>
+							<option value="23:00">23:00</option>
+							<option value="23:30">23:30</option>
+						</select>
 				  </div>
 			  </div>
 			  <div class="box-body">
@@ -161,7 +208,57 @@
 					  <div class="input-group-addon">
 						  <i class="fa fa-calendar"></i>
 					  </div>
-					  <input type="text" name="bdate" id="bdate" class="form-control pull-right datepicker" onchange="get_price()" required>
+					  <input type="text" name="bdate" id="bdate" class="datepicker" onchange="get_price()" value="<?=$order->bdate?>" required>
+					  <select name="btime" class="">
+							<option value="00:00">00:00</option>
+							<option value="00:30">00:30</option>
+							<option value="01:00">01:00</option>
+							<option value="01:30">01:30</option>
+							<option value="02:00">02:00</option>
+							<option value="02:30">02:30</option>
+							<option value="03:00">03:00</option>
+							<option value="03:30">03:30</option>
+							<option value="04:00">04:00</option>
+							<option value="04:30">04:30</option>
+							<option value="05:00">05:00</option>
+							<option value="05:30">05:30</option>
+							<option value="06:00">06:00</option>
+							<option value="06:30">06:30</option>
+							<option value="07:00">07:00</option>
+							<option value="07:30">07:30</option>
+							<option value="08:00">08:00</option>
+							<option value="08:30">08:30</option>
+							<option value="09:00">09:00</option>
+							<option value="09:30">09:30</option>
+							<option value="10:00">10:00</option>
+							<option value="10:30">10:30</option>
+							<option value="11:00">11:00</option>
+							<option value="11:30">11:30</option>
+							<option value="12:00">12:00</option>
+							<option value="12:30">12:30</option>
+							<option value="13:00">13:00</option>
+							<option value="13:30">13:30</option>
+							<option value="14:00">14:00</option>
+							<option value="14:30">14:30</option>
+							<option value="15:00">15:00</option>
+							<option value="15:30">15:30</option>
+							<option value="16:00">16:00</option>
+							<option value="16:30">16:30</option>
+							<option value="17:00">17:00</option>
+							<option value="17:30">17:30</option>
+							<option value="18:00">18:00</option>
+							<option value="18:30">18:30</option>
+							<option value="19:00">19:00</option>
+							<option value="19:30">19:30</option>
+							<option value="20:00">20:00</option>
+							<option value="20:30">20:30</option>
+							<option value="21:00">21:00</option>
+							<option value="21:30">21:30</option>
+							<option value="22:00">22:00</option>
+							<option value="22:30">22:30</option>
+							<option value="23:00">23:00</option>
+							<option value="23:30">23:30</option>
+						</select>
 				  </div>
 				  <font color="red" id="bdate_msg" style="display:none"><b>不得少於起始日期</b></font>
 			  </div>
@@ -181,21 +278,21 @@
 			  <div class="box-body">
 				  <label>原價</label>
 				  <div class="form-group">
-					  <font color="red" size="20" id="total_price">0</font>
+					  <font color="red" size="20" id="total_price"><?=$order->org_price?></font>
 				  </div>
 				  <label>特別價格</label>
 				  <div class="form-group">
 					  <div class="input-group">
 						  <span class="input-group-addon">$</span>
-						  <input type="text" name="special_price" class="form-control" placeholder="" required>
+						  <input type="text" name="special_price" class="form-control" placeholder="" value="<?=$order->special_price?>" required>
 					  </div>
 				  </div>
 			  </div>
 			  <div class="box-body">
 				  <label>發票需求</label>
 				  <div class="form-group">
-				  <label>二聯 <input type="radio" name="invoice" value="2" checked></label>
-				  <label>三聯 <input type="radio" name="invoice" value="3"></label>
+				  <label>二聯 <input type="radio" name="invoice" value="2" <?php if($order->invoice==2){echo 'checked';} ?>></label>
+				  <label>三聯 <input type="radio" name="invoice" value="3" <?php if($order->invoice==3){echo 'checked';} ?>></label>
 				  </div>
 			  </div>
 		  </div>
@@ -234,7 +331,7 @@
 <script src="<?=base_url();?>plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=base_url();?>/dist/js/demo.js"></script>
-<?php
+<?php	
 $car_option='<option disabled >===請選擇車輛===</option>';
 foreach($car['list'] as $k=>$v){
 	$car_option .= '<option data-price="'.$v->price.'" value="'.$v->sn.'">'.$v->name.' ($'.number_format($v->price).')</option>';
@@ -249,11 +346,27 @@ foreach($driver['list'] as $k=>$v){
 <script>
 $(function () {
 	$(".select2").select2();
+
+	$(".location_label a").click(function(){
+		var location_str = $(this).html();
+		$("#input_location").val(location_str);
+	})
+
+	/*資料帶回*/
+	<?php
+	foreach($order_d as $k=>$v){
+		echo '$("#addcarbtn").click();';
+		echo '$("#li'.($k+1).' .cars option[value='.$v->car_id.']").attr("selected","selected");';
+		echo '$("#li'.($k+1).' .drivers option[value='.$v->driver_id.']").attr("selected","selected");';
+	}
+	?>
+	/*資料帶回*/
+	get_price();
 })
 //Date picker
 $('.datepicker').datepicker({
   autoclose: true,
-  format: 'yyyy/mm/dd',
+  format: 'yyyy-mm-dd',
 });
 
 var n=1;
@@ -261,9 +374,9 @@ $("#addcarbtn").click(function(){
 	var car_option='<?=$car_option?>';
 	var driver_option='<?=$driver_option?>';
 	var html = 
-	"<li id=\"li"+n+"\">"
+	"<li class='order_d' id=\"li"+n+"\">"
 		+"<select class='cars' onchange='get_price()' name='cars["+n+"]'>"+car_option+"</select>"
-		+"<select name='drivers["+n+"]'>"+driver_option+"</select>"
+		+"<select class='drivers' name='drivers["+n+"]'>"+driver_option+"</select>"
 		//+"SIZE<input type=\"text\" name=\"sizename"+n+"\" size=\"10\">"
 		+"<a href=\"javascript:\" onclick=\"var n=liremove("+n+")\";> <i class='fa fa-remove'></i></a>"
 	+"</li>";
@@ -277,8 +390,8 @@ function liremove(i){
 }
 
 function datediff(){
-    var StartDate=$( "#adate" ).val();//定義起始 年月日
-    var EndDate=$( "#bdate" ).val();//定義結束 年月日
+    var StartDate=new Date($( "#adate" ).val());//定義起始 年月日
+    var EndDate=new Date($( "#bdate" ).val());//定義結束 年月日
 	//alert('相差 '+ (DateDifference(StartDate,EndDate))+'天');
 	var sumday=(DateDifference(StartDate,EndDate))+1;
 	if(sumday<1){

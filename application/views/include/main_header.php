@@ -75,11 +75,12 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+
           <ul class="treeview-menu">
             <!--<li class="active"><a href="<?=base_url();?>car"><i class="fa fa-circle-o"></i>車輛管理</a></li>-->
-            <li><a href="<?=base_url();?>car"><i class="fa fa-circle-o"></i>車輛管理</a></li>
-            <li><a href="<?=base_url();?>driver"><i class="fa fa-circle-o"></i>司機管理</a></li>
-            <li><a href="<?=base_url();?>customer"><i class="fa fa-circle-o"></i>客戶管理</a></li>
+            <li style="<?php if(!in_array('car', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>car"><i class="fa fa-circle-o"></i>車輛管理</a></li>
+            <li style="<?php if(!in_array('driver', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>driver"><i class="fa fa-circle-o"></i>司機管理</a></li>
+            <li style="<?php if(!in_array('customer', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>customer"><i class="fa fa-circle-o"></i>客戶管理</a></li>
           </ul>
         </li>
       </ul>
@@ -93,26 +94,14 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?=base_url();?>order_car"><i class="fa fa-circle-o"></i>訂單</a></li>
-            <li><a href="<?=base_url();?>calendar"><i class="fa fa-circle-o"></i>派車表</a></li>
+            <li style="<?php if(!in_array('order_car', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>order_car"><i class="fa fa-circle-o"></i>訂單</a></li>
+            <li style="<?php if(!in_array('calendar', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>calendar"><i class="fa fa-circle-o"></i>派車表</a></li>
+            <li style="<?php if(!in_array('permission', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>permission"><i class="fa fa-circle-o"></i>權限管理</a></li>
+            <!--<li><a href="<?=base_url();?>report"><i class="fa fa-circle-o"></i>會計報表</a></li>-->
           </ul>
         </li>
       </ul>
-      <ul class="sidebar-menu">
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>功能</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=base_url();?>permission"><i class="fa fa-circle-o"></i>權限管理</a></li>
-            <li><a href="<?=base_url();?>report"><i class="fa fa-circle-o"></i>會計報表</a></li>
-          </ul>
-        </li>
-      </ul>
-
+      
       
     </section>
     <!-- /.sidebar -->

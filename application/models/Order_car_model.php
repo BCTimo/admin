@@ -35,7 +35,7 @@ class order_car_model extends CI_Model {
         return $this->db->insert_id();
     }
     
-	function get_order_d(){
+	function get_order_d($order_id=''){
         //$query = $this->db->get('order_car_d');
         $sql='
             select od.*,c.code as car_code,c.name as car_name,c.type as car_type, o.atime,o.btime,o.location,rem_drive,readytogo,
@@ -45,7 +45,18 @@ class order_car_model extends CI_Model {
             left join car c on c.sn = od.car_id
             left join driver d on d.sn = od.driver_id
         ';
+        if($order_id!=''){
+            $sql.='where order_id = '.$order_id;
+        }
        
+        $query=$this->db->query($sql);
+        return $query->result();
+    }
+    function get_order_d_g($order_id=''){
+        //$query = $this->db->get('order_car_d');
+        $sql='
+            SELECT * FROM `order_car_d` where order_id = '.$order_id.' group by car_id,driver_id
+        ';
         $query=$this->db->query($sql);
         return $query->result();
     }
@@ -69,5 +80,10 @@ class order_car_model extends CI_Model {
         $data['reply_time']=date("YmdHis");
         $this->db->where('sn', $data['sn']);
 		$this->db->update('order_car_d', $data);
+    }
+    function clear_order_d($order_sn){
+        $data['reply_time']=date("YmdHis");
+        $this->db->where('order_id', $order_sn);
+		$this->db->delete('order_car_d');
     }
 }
