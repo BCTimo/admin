@@ -163,15 +163,7 @@
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
 $(function () {
-    $("#list").DataTable({
-		"paging": true,
-		"lengthChange": true,
-		"searching": true,
-		"ordering": true,
-		"info": true,
-		"autoWidth": false
-	});
-
+  
   $('.toggle-event').change(function() {
     var readytogo=Number($(this).prop('checked'));
     var sn = $(this).data('sn');
@@ -189,7 +181,18 @@ $(function () {
           console.log("發生錯誤, 請重新操作");
       }
     })
-  })
+  });
+
+
+  $("#list").DataTable({
+		"paging": true,
+		"lengthChange": true,
+		"searching": true,
+		"ordering": true,
+		"info": true,
+		"autoWidth": false
+	});
+
 });
 </script>
 
