@@ -69,6 +69,9 @@
 						<select name="type" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
 							<option <?php if($detail->type==1)echo 'selected'; ?> value="1">散客</option>
 							<option <?php if($detail->type==2)echo 'selected'; ?> value="2">公司</option>
+							<option <?php if($detail->type==3)echo 'selected'; ?> value="3">飯店</option>
+							<option <?php if($detail->type==4)echo 'selected'; ?> value="4">旅行社</option>
+							<option <?php if($detail->type==5)echo 'selected'; ?> value="5">同業</option>
 						</select>
 					</div>
 					<div class="box-body">

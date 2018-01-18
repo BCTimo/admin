@@ -95,6 +95,7 @@
           </a>
           <ul class="treeview-menu">
             <li style="<?php if(!in_array('order_car', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>order_car"><i class="fa fa-circle-o"></i>訂單</a></li>
+            <li style="<?php if(!in_array('order_car', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>peer_order"><i class="fa fa-circle-o"></i>代訂訂單</a></li>
             <li style="<?php if(!in_array('calendar', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>calendar"><i class="fa fa-circle-o"></i>派車表</a></li>
             <li style="<?php if(!in_array('permission', json_decode($_SESSION['permission']))){ echo 'display:none';};?>"><a href="<?=base_url();?>permission"><i class="fa fa-circle-o"></i>權限管理</a></li>
             <!--<li><a href="<?=base_url();?>report"><i class="fa fa-circle-o"></i>會計報表</a></li>-->

@@ -52,7 +52,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><a href="<?=base_url();?>customer/add" class="btn btn-block btn-primary">新增</a></h3>
+              <h3 class="box-title"><a href="<?=base_url();?>peer_order/add" class="btn btn-block btn-primary">新增</a></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -60,37 +60,47 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>客種</th>
-                    <th>名稱</th>
-                    <th>手機</th>
-                    <th>建立時間</th>
+                    <th>客戶</th>
+                    <th>使用日期</th>
+                    <th>成本</th>
+                    <th>報價</th>
+                    <th>利潤</th>
+                    <th>狀態</th>
+                    <th>下單日</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                     <?php
                     foreach($list as $v){
-                      switch($v->type){
-                        case 1:$type_name='散客';break;
-                        case 2:$type_name='公司';break;
-                        case 3:$type_name='飯店';break;
-                        case 4:$type_name='旅行社';break;
-                        case 5:$type_name='同業';break;
+                      //報價未收  已收款  已開發票  結案  取消 
+                      switch($v->status){
+                        case 0:$status='報價未收';break;
+                        case 1:$status='已收款';break;
+                        case 2:$status='已開發票';break;
+                        case 3:$status='結案';break;
+                        case 4:$status='取消';break;
                       }
+                      
                       echo '
                         <tr>
                           <td>'.$v->sn.'</td>
-                          <td>'.$type_name.'</td>
-                          <td>'.$v->name.'</td>
-                          <td>'.$v->phone.'</td>
-                          <td>'.$v->create_at.'</td>
+                          <td>'.$v->customer_info->name.'</td>
+                          <td>'.$v->adate.'~'.$v->bdate.'</td>
+                          <td>'.$v->cost.'</td>
+                          <td>'.$v->price.'</td>
+                          <td>'.($v->price-$v->cost).'</td>
+                          <td>'.$status.'</td>
+                          <td>'.$v->order_date.'</td>
                           <td>
-                                <a class="btn btn-app" href="'.site_url("customer/edit/$v->sn").'">
+                                <a class="btn btn-app" href="'.site_url("peer_order/edit/$v->sn").'">
                                   <i class="fa fa-edit"></i> 編輯
                                 </a>
-                                <a class="btn btn-app" onclick="return confirm(\'確認刪除?\')" href="'.site_url("customer/delete/$v->sn").'">
+                                <!--
+                                <a class="btn btn-app" onclick="return confirm(\'確認刪除?\')" href="'.site_url("peer_order/delete/$v->sn").'">
                                   <i class="fa fa-remove"></i> 刪除
                                 </a>
+                                -->
                           </td>
                         </tr>
                       ';
@@ -101,10 +111,13 @@
                 <tfoot>
                 <tr>
                     <th>Id</th>
-                    <th>客種</th>
-                    <th>名稱</th>
-                    <th>手機</th>
-                    <th>建立時間</th>
+                    <th>客戶</th>
+                    <th>使用日期</th>
+                    <th>成本</th>
+                    <th>報價</th>
+                    <th>利潤</th>
+                    <th>狀態</th>
+                    <th>下單日</th>
                     <th></th>
                 </tr>
                 </tfoot>
@@ -146,9 +159,32 @@
 <script src="<?=base_url();?>/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=base_url();?>/dist/js/demo.js"></script>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script>
 $(function () {
-    $("#list").DataTable({
+  
+  $('.toggle-event').change(function() {
+    var readytogo=Number($(this).prop('checked'));
+    var sn = $(this).data('sn');
+    
+    $.ajax({
+      type: "post",
+      data: {'readytogo': readytogo, 'sn': sn},
+      url: "peer_order/ch_readytogo",
+      //dataType: "json",
+      //headers: {'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')},
+      success: function(data) {
+          
+      },
+      error: function(jqXHR) {
+          console.log("發生錯誤, 請重新操作");
+      }
+    })
+  });
+
+
+  $("#list").DataTable({
 		"paging": true,
 		"lengthChange": true,
 		"searching": true,
@@ -159,5 +195,6 @@ $(function () {
 
 });
 </script>
+
 </body>
 </html>

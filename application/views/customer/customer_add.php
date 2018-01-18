@@ -69,6 +69,9 @@
 						<select name="type" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
 							<option value="1">散客</option>
 							<option value="2">公司</option>
+							<option value="3">飯店</option>
+							<option value="4">旅行社</option>
+							<option value="5">同業</option>
 						</select>
 					</div>
 					<div class="box-body">
